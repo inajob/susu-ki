@@ -8,7 +8,7 @@ y = 1 -- cursor y(row)
 scrollY = 0 -- scroll position in row
 screenWidth = screenwidth()
 screenHeight = screenheight()
-fontHeight = 16
+fontHeight = 12
 alldirty = true
 
 debug("== init ==")

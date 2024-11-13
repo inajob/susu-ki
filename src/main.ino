@@ -1,5 +1,4 @@
-#include "efontEnableJa.h"
-#include "efont.h"
+#include <U8g2lib.h>
 
 #define LGFX_AUTODETECT
 #include <LovyanGFX.hpp>
@@ -11,6 +10,7 @@ static LGFX lcd;
 
 #include <luashell.h>
 LuaShell luaShell;
+static const lgfx::U8g2font font( u8g2_font_b12_t_japanese3 );
 
 QueueHandle_t keyQueue;
 
@@ -141,7 +141,7 @@ void setup(){
   lcd.setBrightness(128);
   //lcd.setColorDepth(16);  // RGB565の16ビットに設定
   lcd.setColorDepth(24);  // RGB888の24ビットに設定(表示される色数はパネル性能によりRGB666の18ビットになります)
-  lcd.setFont(&fonts::efont);
+  lcd.setFont(&font);
 
   if (Usb.Init() == -1)
     Serial.println("OSC did not start.");

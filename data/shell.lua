@@ -1,9 +1,10 @@
 screenWidth = screenwidth()
 screenHeight = screenheight()
-fontHeight = 16
+fontHeight = 12
 
 line = ""
 result = ""
+dirty = true
 function subChar(s, start, e)
     local counter = 1
     local r = ""
@@ -36,16 +37,10 @@ function split(string, delim)
 end
 
 function draw(setPos)
+    -- clear edit line
     color(255,255,255)
-    fillrect(0, 0, screenWidth, screenHeight)
-
-    color(100,100,255)
-    fillrect(0, 0, screenWidth, fontHeight)
-    color(150,150,255)
-    fillrect(2, 2, screenWidth - 4, fontHeight - 4)
-    color(255,255,255)
-    text("== Shell ==", 2, 2)
-
+    fillrect(0, fontHeight, screenWidth, fontHeight)
+    
     color(0,0,0)
     local l = "> " .. line
     text(l, 0, fontHeight * 1)
@@ -54,7 +49,18 @@ function draw(setPos)
     local w = textwidth(l)
     fillrect(w, fontHeight, 2, fontHeight)
 
-    text(result, 0, fontHeight * 2)
+    if dirty then
+        color(255,255,255)
+        fillrect(0, fontHeight * 2, screenWidth, screenHeight - fontHeight*2)
+        color(0,0,0)
+        text(result, 0, fontHeight * 2)
+        dirty = false
+    end
+
+    color(255,255,255)
+    fillrect(0, screenHeight - fontHeight*2, screenWidth, fontHeight*2)
+    color(0,0,0)
+    text(getfreeheap(), 0, screenHeight - fontHeight*2)
 
     setPos(w, 0)
 end
@@ -80,6 +86,7 @@ end
 
 function exec(line)
     result = ""
+    dirty = true
     local parts = split(line, " ")
     if parts[1] == "ls" then
         local files = getfiles()
@@ -102,4 +109,21 @@ end
 
 require("skk")
 imMode = M_HAN
+
+-- all clear
+color(255,255,255)
+fillrect(0, 0, screenWidth, screenHeight)
+
+-- title bar
+color(100,100,255)
+fillrect(0, 0, screenWidth, fontHeight)
+color(150,150,255)
+fillrect(2, 2, screenWidth - 4, fontHeight - 4)
+color(255,255,255)
+text("Shell", fontHeight, 0)
+color(0,0,255)
+fillrect(2,2,fontHeight-4,fontHeight-4)
+color(255,255,255)
+fillrect(3,3,fontHeight-6,fontHeight-6)
+
 draw(setPos)

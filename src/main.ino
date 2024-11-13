@@ -164,7 +164,7 @@ void loop(){
   if(xQueueReceive( keyQueue, &event, 0 )){
     //sprintf(buf, "loop %d [%c][%d]", count1, event.keyChar, event.keyCode);
     //lcd.drawString(buf, 10, 200);
-    Serial.printf("get key down [%c]\n", event.keyChar);
+    Serial.printf("get key down [%c] ctrl:%d\n", event.keyChar, event.ctrl);
     luaShell.onkeydown(event.keyCode, event.keyChar, event.ctrl);
   }
 }

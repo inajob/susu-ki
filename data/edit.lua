@@ -11,6 +11,10 @@ screenHeight = screenheight()
 fontHeight = 16
 alldirty = true
 
+debug("== init ==")
+--debug(getfiles())
+--debug(readfile("test.txt"))
+
 function subChar(s, start, e)
     local counter = 1
     local r = ""
@@ -105,7 +109,7 @@ end
 
 draw()
 
-function keydown(k, c)
+function keydown(k, c, ctrl)
     debug("keydown: " .. k .. "," .. c)
     local key = c
     if k == 13 then -- Enter
@@ -156,6 +160,8 @@ function keydown(k, c)
                 x = utf8.len(lines[y]["value"]) + 1
             end
         end
+    elseif key == "q" and ctrl then
+        exit()
     elseif string.len(key) == 1 or utf8.len(key) == 1 then
         local line = lines[y]
         lines[y]["value"] = insertChar(line["value"], x, key)

@@ -15,7 +15,6 @@ class LuaShell{
   lua_State* L;
   const int16_t TFT_WHITE = 0xffff;
   const int16_t TFT_BLACK = 0x0000;
-
   LuaEngine lua;
   vector<wchar_t> rawInputs;
   vector<wchar_t> ::iterator rawInputsItr;

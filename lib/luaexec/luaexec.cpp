@@ -92,6 +92,10 @@ void LuaEngine::init(LGFX *plgfx){
   lua_setglobal(L, "exit");
 
   lua_pushlightuserdata(L, this);
+  lua_pushcclosure(L, l_run, 1);
+  lua_setglobal(L, "run");
+
+  lua_pushlightuserdata(L, this);
   lua_pushcclosure(L, l_require, 1);
   lua_setglobal(L, "require");
 
@@ -173,7 +177,7 @@ void LuaEngine::keydown(char key, char c, bool ctrl){
 
 int LuaEngine::l_getFiles(lua_State* L){
   LuaEngine* self = (LuaEngine*)lua_touserdata(L, lua_upvalueindex(1));
-  const char* path = lua_tostring(L, 1);
+  const char* path = "/";//lua_tostring(L, 1);
 
   lua_newtable(L);
   int i = 1;
@@ -249,7 +253,7 @@ int LuaEngine::l_text(lua_State* L){
 int LuaEngine::l_clear(lua_State* L){
   LuaEngine* self = (LuaEngine*)lua_touserdata(L, lua_upvalueindex(1));
 
-  self->lgfx->fillScreen(self->bgColor);
+  self->lgfx->fillScreen(self->color);
   return 0;
 }
 int LuaEngine::l_fillRect(lua_State* L){
@@ -259,7 +263,7 @@ int LuaEngine::l_fillRect(lua_State* L){
   const int w = lua_tointeger(L, 3);
   const int h = lua_tointeger(L, 4);
 
-  self->lgfx->fillRect(x, y, w, h, self->fgColor);
+  self->lgfx->fillRect(x, y, w, h, self->color);
   return 0;
 }
 int LuaEngine::l_getFreeHeap(lua_State* L){
@@ -297,14 +301,9 @@ int LuaEngine::l_color(lua_State* L){
   r = lua_tointeger(L, 1);
   g = lua_tointeger(L, 2);
   b = lua_tointeger(L, 3);
-  int r2,g2,b2;
-  r2 = lua_tointeger(L, 4);
-  g2 = lua_tointeger(L, 5);
-  b2 = lua_tointeger(L, 6);
 
-  self->fgColor = rgb24to16(r, g, b);
-  self->bgColor = rgb24to16(r2, g2, b2);
-  self->lgfx->setTextColor(self->fgColor, self->bgColor);
+  self->color = rgb24to16(r, g, b);
+  self->lgfx->setTextColor(self->color);
   return 0;
 }
 int LuaEngine::l_debug(lua_State* L){
@@ -314,9 +313,21 @@ int LuaEngine::l_debug(lua_State* L){
   return 0;
 }
 
+int LuaEngine::l_run(lua_State* L){
+  LuaEngine* self = (LuaEngine*)lua_touserdata(L, lua_upvalueindex(1));
+  const char* fileName = lua_tostring(L, 1);
+
+  self->fileNameStack.push_back(self->fileName);
+  self->isTerminate = true;
+  self->fileName = fileName;
+  return 0;
+}
+
 int LuaEngine::l_exit(lua_State* L){
   LuaEngine* self = (LuaEngine*)lua_touserdata(L, lua_upvalueindex(1));
   self->isTerminate = true;
+  self->fileName = self->fileNameStack.back();
+  self->fileNameStack.pop_back();
   return 0;
 }
 

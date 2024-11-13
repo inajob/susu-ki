@@ -23,6 +23,7 @@ bool LuaShell::onkeydown(char key, char c, bool ctrl){
   isTerminate = lua.isTerminate;
   if(isTerminate == 1){
     lua.exit();
+    lua.init(lua.lgfx);
   }
   return true;
 }

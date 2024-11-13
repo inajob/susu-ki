@@ -7,7 +7,7 @@ M_DIRECT = 0
 M_HENKAN = 1
 M_SELECT = 2
 M_HAN = 3
-imMode = M_DIRCET
+imMode = M_DIRECT
 cx = 0 -- (px)
 cy = 0 -- (px)
 
@@ -84,42 +84,55 @@ rome["pe"] = "ぺ"
 rome["po"] = "ぽ"
 rome["kya"] = "きゃ"
 rome["kyu"] = "きゅ"
+rome["kye"] = "きぇ"
 rome["kyo"] = "きょ"
 rome["sya"] = "しゃ"
 rome["syu"] = "しゅ"
+rome["sye"] = "しぇ"
 rome["syo"] = "しょ"
 rome["tya"] = "ちゃ"
 rome["tyu"] = "ちゅ"
+rome["tye"] = "ちぇ"
 rome["tyo"] = "ちょ"
 rome["nya"] = "にゃ"
 rome["nyu"] = "にゅ"
+rome["nye"] = "にぇ"
 rome["nyo"] = "にょ"
 rome["hya"] = "ひゃ"
 rome["hyu"] = "ひゅ"
+rome["hye"] = "ひぇ"
 rome["hyo"] = "ひょ"
 rome["mya"] = "みゃ"
 rome["myu"] = "みゅ"
+rome["mye"] = "みぇ"
 rome["myo"] = "みょ"
 rome["rya"] = "りゃ"
 rome["ryu"] = "りゅ"
+rome["rye"] = "りぇ"
 rome["ryo"] = "りょ"
 rome["gya"] = "ぎゃ"
 rome["gyu"] = "ぎゅ"
+rome["gye"] = "ぎぇ"
 rome["gyo"] = "ぎょ"
 rome["zya"] = "じゃ"
 rome["zyu"] = "じゅ"
+rome["zye"] = "じぇ"
 rome["zyo"] = "じょ"
 rome["ja"] = "じゃ"
 rome["ju"] = "じゅ"
+rome["je"] = "じぇ"
 rome["jo"] = "じょ"
 rome["dya"] = "ぢゃ"
 rome["dyu"] = "ぢゅ"
+rome["dye"] = "ぢぇ"
 rome["dyo"] = "ぢょ"
 rome["bya"] = "びゃ"
 rome["byu"] = "びゅ"
+rome["bye"] = "びぇ"
 rome["byo"] = "びょ"
 rome["pya"] = "ぴゃ"
 rome["pyu"] = "ぴゅ"
+rome["pye"] = "ぴぇ"
 rome["pyo"] = "ぴょ"
 rome["nn"] = "ん"
 rome["-"] = "ー"
@@ -194,13 +207,13 @@ function decide()
     alldirty = true
     if #results == 0 then
         for i=1, #candidate do
-            onCharHandler(0, string.sub(candidate, i, i))
+            onCharHandler(0, string.sub(candidate, i, i), false)
         end
     else
         local s = results[index]
         for p, c in utf8.codes(s) do
             local uc = utf8.char(c)
-            onCharHandler(0, uc)
+            onCharHandler(0, uc, false)
         end
     end
     candidate = nextCandidate
@@ -255,9 +268,9 @@ function keydown(k, c, ctrl)
         local kata = hira2kata(hira)
         results = {kata}
         decide()
-    elseif string.len(c) == 1 and k ~= 13 and k ~= 32 then
+    elseif string.len(c) == 1 and k ~= 13 and k ~= 32 and not(ctrl) then
         if imMode == M_HAN then
-            onCharHandler(0, c)
+            onCharHandler(0, c, ctrl)
         else
             local triggered = (string.upper(c) == c and isAlphabet(c)) and c ~= "-"
             if imMode == M_SELECT then
@@ -288,7 +301,7 @@ function keydown(k, c, ctrl)
                 elseif not(triggered) then
                     for p, c in utf8.codes(hira) do
                         local uc = utf8.char(c)
-                        onCharHandler(0, uc)
+                        onCharHandler(0, uc, false)
                     end
                     candidate = string.sub(candidate, index)
                 end
@@ -296,7 +309,7 @@ function keydown(k, c, ctrl)
         end
         drawIm()
     else
-        onCharHandler(k, c)
+        onCharHandler(k, c, ctrl)
     end
 end
 
@@ -347,3 +360,5 @@ function drawIm()
         text(results[i], cx, i*fontHeight + cy)
     end
 end
+
+drawIm()

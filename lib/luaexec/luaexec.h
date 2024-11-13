@@ -1,9 +1,13 @@
+using namespace std;
+
 #define LGFX_AUTODETECT
 #include <LovyanGFX.hpp>
 #include <LGFX_AUTODETECT.hpp>
 
 #include <SD.h>
 #include <SPIFFS.h>
+#include <vector>
+#include <string>
 
 #ifndef LUA_EXEC_H
 #define LUA_EXEC_H
@@ -33,11 +37,11 @@ class LuaEngine{
   const int16_t TFT_WHITE = 0xffff;
   const int16_t TFT_BLACK = 0x0000;
   const int16_t TFT_RED = 0xF800;
-  int16_t fgColor = 0xffff;
-  int16_t bgColor = 0x0000;
+  int16_t color = 0xffff;
   LGFX *lgfx;
   bool isSD = false;
-  String fileName = "/main.lua";
+  String fileName = "/shell.lua";
+  vector<String> fileNameStack;
   String errorString;
   bool runError;
 
@@ -62,6 +66,7 @@ class LuaEngine{
   static int l_textWidth(lua_State* L);
   static int l_screenWidth(lua_State* L);
   static int l_screenHeight(lua_State* L);
+  static int l_run(lua_State* L);
   static int l_exit(lua_State* L);
   static int l_require(lua_State* L);
 };

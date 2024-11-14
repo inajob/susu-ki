@@ -1,5 +1,5 @@
 buf = {}
-with open("./skk/SKK-JISYO.ML.txt", "r", encoding="utf8") as f:
+with open("./skk/SKK-JISYO.ML", "r", encoding="euc_jp") as f:
     for line in f:
         if line[0] == ";":
             continue

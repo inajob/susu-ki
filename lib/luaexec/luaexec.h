@@ -39,7 +39,7 @@ class LuaEngine{
   const int16_t TFT_RED = 0xF800;
   int16_t color = 0xffff;
   LGFX *lgfx;
-  bool isSD = false;
+  bool isSD = true;
   String fileName = "/shell.lua";
   vector<String> fileNameStack;
   String errorString;

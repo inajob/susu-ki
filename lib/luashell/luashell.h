@@ -21,6 +21,7 @@ class LuaShell{
   bool isTerminate = false;
 
   virtual void init(LGFX *lgfx);
+  void copyToSD(char* name);
   virtual bool onkeydown(char key, char c, bool ctrl);
 };
 #endif

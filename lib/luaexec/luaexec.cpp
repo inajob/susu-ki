@@ -106,6 +106,11 @@ void LuaEngine::init(LGFX *plgfx){
   File fp;
   if(isSD){
     fp = SD.open(fileName, FILE_READ);
+    if(!fp){
+      Serial.println("SD file open error");
+      isTerminate = true;
+      return;
+    }
   }else{
     fp = SPIFFS.open(fileName, FILE_READ);
   }
@@ -337,7 +342,13 @@ int LuaEngine::l_require(lua_State* L){
   const char* fname = lua_tostring(L, 1);
   char fpath[128];
   sprintf(fpath, "/%s.lua", fname);
-  File fp = SPIFFS.open(fpath, FILE_READ);
+
+  File fp;
+  if(self->isSD){
+    fp = SD.open(fpath, FILE_READ);
+  }else{
+    fp = SPIFFS.open(fpath, FILE_READ);
+  }
 
   struct LoadF lf;
   lf.f = fp;

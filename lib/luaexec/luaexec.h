@@ -40,7 +40,7 @@ class LuaEngine{
   int16_t color = 0xffff;
   LGFX *lgfx;
   bool isSD = true;
-  String fileName = "/shell.lua";
+  String fileName = "/edit.lua";
   vector<String> fileNameStack;
   String errorString;
   bool runError;

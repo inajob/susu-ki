@@ -21,7 +21,7 @@ susu-ki はESP32で動作する、画面、キーボードを前提としたLua�
 
 ## プログラムの書き込み
 - `platformio run -t upload` を実行してM5Stackにプログラムを書き込んでください
-- `platorimo run -t uploadfs` を実行して `data/` 以下のファイルをSPIFFSに書き込んでください
+- `platformio run -t uploadfs` を実行して `data/` 以下のファイルをSPIFFSに書き込んでください
 
 ## プログラムの実行
 - 書き込みが終わると自動的に起動します

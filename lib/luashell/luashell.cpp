@@ -30,6 +30,8 @@ void LuaShell::init(LGFX *lgfx){
   copyToSD("/shell.lua");
   copyToSD("/edit.lua");
   copyToSD("/skk.lua");
+  copyToSD("/prompt.lua");
+  copyToSD("/alert.lua");
 
   lua.init(lgfx);
 }

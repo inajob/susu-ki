@@ -206,7 +206,9 @@ function rome2kana(s)
 end
 
 function decide()
-    alldirty = true
+    for i, w in pairs(windows) do
+        w.alldirty = true
+    end
     if #results == 0 then
         for i=1, #candidate do
             onCharHandler(0, string.sub(candidate, i, i), false)
@@ -223,6 +225,7 @@ function decide()
     results = {}
     index = 1
     imMode = M_DIRECT
+    draw()
     drawIm()
 end
 
